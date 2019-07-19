@@ -1,0 +1,26 @@
+{
+  "name": "news_scraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marinadelkovamoro/news_scraper.git"
+  },
+  "author": "Marina Delkova-Moro",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marinadelkovamoro/news_scraper/issues"
+  },
+  "homepage": "https://github.com/marinadelkovamoro/news_scraper#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "express": "^4.17.1",
+    "handlebars": "^4.1.2",
+    "mongoose": "^5.6.5"
+  }
+}

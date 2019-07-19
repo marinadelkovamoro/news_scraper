@@ -7,6 +7,8 @@ const app = express();
 
 const router = express.Router();
 
+require("./config/routes")(router);
+
 app.use(express.static("public"));
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));

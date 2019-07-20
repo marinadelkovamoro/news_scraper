@@ -1,7 +1,7 @@
 const cheerio = require("cheerio");
 const request = require("request");
 
-var scrape = function (callback) {
+var scrape = function () {
     request("https://sandiegotheatres.org/", (err, res, body) => {
 
         const $ = cheerio.load(body);
@@ -22,7 +22,8 @@ var scrape = function (callback) {
             };
             headlines.push(headlinesToAdd);
         });
-        callback(headlines);
+        console.log("headlines: "+ JSON.stringify(headlines));
+        return headlines;
     });
 };
 

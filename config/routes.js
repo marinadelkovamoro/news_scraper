@@ -3,13 +3,13 @@ const scrape = require("../scripts/scrape");
 const cheerio = require("cheerio");
 const request = require("request");
 const mongoose = require("mongoose");
-const db = require("../models/Headline");
+const db = require("../models");
 
 const headlinesController = require("../controllers/headlines");
 const notesController = require("../controllers/notes");
 
 // creating a new router using express so that we can hit the routes
-const router = express.Router(); 
+const router = express.Router();
 
 
 router.get("/", (req, res) => {
@@ -18,12 +18,13 @@ router.get("/", (req, res) => {
 
 router.get("/scrape", (req, res) => {
     console.log("inside the scrape route");
-   //var data = scrape();
-   request("https://sandiegotheatres.org/", (err, res, body) => {
+    var headlines = [];
+    //var data = scrape();
+    request("https://sandiegotheatres.org/", (err, res, body) => {
 
         const $ = cheerio.load(body);
 
-        var headlines = [];
+
 
         $("div.post").each(function (i, element) {
 
@@ -39,18 +40,19 @@ router.get("/scrape", (req, res) => {
             };
             headlines.push(headlinesToAdd);
         });
-        console.log("headlines: "+ JSON.stringify(headlines));
+        console.log("headlines: " + JSON.stringify(headlines));
+        db.Headline.create(headlines)
+        .then(function (dbHeadline) {
+            // View the added result in the console
+            console.log("head lines: " + dbHeadline);
+        })
+        .catch((err) => {
+            // If an error occurred, log it
+            console.log(err);
+        });
     });
-   db.Headline.create(headlines)
-   .then(function(dbHeadline){
-     // View the added result in the console
-     console.log(dbHeadline);
-   })
-   .catch((err) => {
-     // If an error occurred, log it
-     console.log(err);
-   });
-   res.send("complete");
+    
+    res.send("complete");
 });
 
 router.get("/saved", (req, res) => {

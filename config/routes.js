@@ -19,12 +19,9 @@ router.get("/", (req, res) => {
 router.get("/scrape", (req, res) => {
     console.log("inside the scrape route");
     var headlines = [];
-    //var data = scrape();
-    request("https://sandiegotheatres.org/", (err, res, body) => {
+    request("https://sandiegotheatres.org/", (req, res, body) => {
 
         const $ = cheerio.load(body);
-
-
 
         $("div.post").each(function (i, element) {
 
@@ -42,16 +39,18 @@ router.get("/scrape", (req, res) => {
         });
         console.log("headlines: " + JSON.stringify(headlines));
         db.Headline.create(headlines)
-        .then(function (dbHeadline) {
-            // View the added result in the console
-            console.log("head lines: " + dbHeadline);
-        })
-        .catch((err) => {
-            // If an error occurred, log it
-            console.log(err);
-        });
+            .then(function (dbHeadline) {
+                // View the added result in the console
+                console.log("head lines: " + dbHeadline);
+                // render home.handlebars displaying the scraped headlines
+                res.render("home", { db_headlines: dbHeadline });
+            })
+            .catch((err) => {
+                // If an error occurred, log it
+                console.log(err);
+            });
     });
-    
+
     res.send("complete");
 });
 
